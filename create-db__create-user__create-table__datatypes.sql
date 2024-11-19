@@ -1,3 +1,5 @@
+/*
+
 The file consists explanations of : 
 
 create & use database;
@@ -9,7 +11,7 @@ create-table-with-datatypes.
 
 Description & Use case of data types.
 
----
+*/
 
 CREATE DATABASE playground;
 
@@ -19,19 +21,19 @@ show tables;
 
 DESCRIBE users;
 
-CREATE USER 'userName'@'localhost' IDENTIFIED BY 'some_password'; // Connect from only localhost
+CREATE USER 'userName'@'localhost' IDENTIFIED BY 'some_password'; -- Connect from only localhost
 
-CREATE USER 'userName'@'%' IDENTIFIED BY 'some_password'; // Connect from anywhere except localhost
+CREATE USER 'userName'@'%' IDENTIFIED BY 'some_password'; -- Connect from anywhere except localhost
 
-GRANT SELECT, INSERT, UPDATE ON databaseName.* TO 'userName'@'localhost'; // Give SELECT, INSERT, UPDATE privileges to given DB
+GRANT SELECT, INSERT, UPDATE ON databaseName.* TO 'userName'@'localhost'; -- Give SELECT, INSERT, UPDATE privileges to given DB
 
-GRANT SELECT, INSERT, UPDATE ON *.* TO 'userName'@'localhost'; // Give SELECT, INSERT, UPDATE privileges to all DB.
+GRANT SELECT, INSERT, UPDATE ON *.* TO 'userName'@'localhost'; -- Give SELECT, INSERT, UPDATE privileges to all DB.
 
-GRANT SELECT, INSERT, UPDATE ON *.* TO 'userName'@'localhost' WITH GRANT OPTION; // Give SELECT, INSERT, UPDATE privileges to all DB with Create New User privilege.
+GRANT SELECT, INSERT, UPDATE ON *.* TO 'userName'@'localhost' WITH GRANT OPTION; -- Give SELECT, INSERT, UPDATE privileges to all DB with Create New User privilege.
 
-GRANT ALL ON *.* TO 'userName'@'localhost' WITH GRANT OPTION; // Give all privileges to all DB with Create New User privilege.
+GRANT ALL ON *.* TO 'userName'@'localhost' WITH GRANT OPTION; -- Give all privileges to all DB with Create New User privilege.
 
---
+/* ---------------------- */
 
 CREATE DATABASE SampleDB;
 
@@ -57,10 +59,7 @@ CREATE TABLE user (
     discount_rate DOUBLE
 );
 
-You said:
-3  - Inset query
-ChatGPT said:
-ChatGPT
+/* ---------------------- */
 
 INSERT INTO user (user_id, username, email, birth_date, registration_datetime, last_login, signup_year, login_time, status, age, score, total_logins, total_points, balance, account_limit, transaction_rate, discount_rate) 
 VALUES 
@@ -70,18 +69,15 @@ VALUES
 
 (3, 'AlexJones', 'alexjones@example.com', '1992-12-01', '2024-11-11 09:00:00', CURRENT_TIMESTAMP, 2024, '09:00:00', 0, 31, 1400, 40, 6000, 1800.00, 15000.00, 1.2, 0.10);
 
-You said:
-When to use 
+/* ---------------------- */
+
+/* When to use & What are the use case of these DataTypes :
 
 CHAR, VARCHAR
 
 DECIMAL, NUMERIC
 
 FLOAT, DOUBLE
-
-What is the use case of these
-ChatGPT said:
-ChatGPT
 
 Here’s a brief explanation of each type and their typical use cases:
 1. CHAR vs. VARCHAR
@@ -110,23 +106,7 @@ Here’s a brief explanation of each type and their typical use cases:
         Use Case: High-precision calculations, such as complex scientific or statistical data, where more precision is needed than FLOAT can offer.
         Characteristics: Offers double the precision of FLOAT (up to about 15 decimal digits), but uses more memory.
 
-You said:
-Give  minimum & maximul length fo these types, only length no explanation
-ChatGPT said:
-ChatGPT
-
-    CHAR: 0 to 255 characters
-    VARCHAR: 0 to 65,535 characters
-    DECIMAL / NUMERIC: 65 digits (precision) and 30 digits (scale)
-    FLOAT: 4 bytes (single precision, ~7 decimal digits)
-    DOUBLE: 8 bytes (double precision, ~15 decimal digits)
-
-You said:
-Give in thise format for all
-
-EX : MIN : CHAR(0) | MAX CHAR(255)
-ChatGPT said:
-ChatGPT
+Minimum & Maximul length fo these types :
 
     CHAR: MIN: CHAR(0) | MAX: CHAR(255)
     VARCHAR: MIN: VARCHAR(0) | MAX: VARCHAR(65535)
@@ -135,13 +115,14 @@ ChatGPT
     DOUBLE: MIN: DOUBLE(~15 decimal digits) | MAX: DOUBLE(~15 decimal digits)
 
 You said:
+
 FLOAT(2,2) 
 
 DOUBLE(12,12) 
 
 is these are valid?
+
 ChatGPT said:
-ChatGPT
 
 No, these are not valid definitions for FLOAT or DOUBLE in most SQL databases. Unlike DECIMAL and NUMERIC, which allow you to specify precision and scale (e.g., DECIMAL(10,2)), FLOAT and DOUBLE do not support this syntax for defining precision and scale in SQL standards.
 
@@ -151,18 +132,23 @@ For FLOAT and DOUBLE, specifying (m, d) (precision and scale) is generally unsup
     DOUBLE typically has a precision of around 15 decimal digits.
 
 To specify exact precision and scale for decimal values, use DECIMAL or NUMERIC instead.
+
+----------------------
+
 You said:
+
 This is a valid query
 
 CREATE TABLE examples (id BIGINT AUTO_INCREMENT PRIMARY KEY, point FLOAT(255, 30), score DOUBLE(255, 30));
+
 ChatGPT said:
-ChatGPT
 
 The query you provided is invalid because most SQL databases do not support specifying (m, d) (precision and scale) for FLOAT and DOUBLE types.
 
 In MySQL, for example, the syntax FLOAT(m, d) and DOUBLE(m, d) is deprecated or unsupported in modern versions, as FLOAT and DOUBLE are approximate types rather than fixed-precision types.
 
 If you want to specify precision and scale, you should use DECIMAL or NUMERIC instead, as they are designed for exact decimal representations. Here's a corrected version:
+*/
 
 CREATE TABLE examples (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -170,7 +156,7 @@ CREATE TABLE examples (
     score DECIMAL(255, 30)
 );
 
-If you require the use of FLOAT or DOUBLE, you should remove the (m, d) specifications:
+-- If you require the use of FLOAT or DOUBLE, you should remove the (m, d) specifications:
 
 CREATE TABLE examples (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -178,13 +164,15 @@ CREATE TABLE examples (
     score DOUBLE
 );
 
-This way, FLOAT and DOUBLE will provide approximate values without the exact precision and scale limitations, following their intended use in SQL.
-You said:
-any othe these data types includes decimal points, will round any values
+-- This way, FLOAT and DOUBLE will provide approximate values without the exact precision and scale limitations, following their intended use in SQL.
 
-example 9.999 will store is as 10.00 by any chance
+/*
+
+You said:
+
+any othe these data types includes decimal points, will round any values. Example 9.999 will store as 10.00 by any chance
+
 ChatGPT said:
-ChatGPT
 
 Yes, certain data types can lead to rounding depending on their precision and scale settings, particularly DECIMAL and NUMERIC types when defined with a limited scale. Here’s how different types handle decimal points and rounding:
 1. DECIMAL / NUMERIC
@@ -204,6 +192,8 @@ Yes, certain data types can lead to rounding depending on their precision and sc
 
 To avoid unexpected rounding, always choose a data type and specify the precision and scale that matches your expected data range and accuracy requirements, especially for financial or scientific calculations where exact precision is critical.
 
+*/
+
 CREATE TABLE examples (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     point_float FLOAT,
@@ -212,7 +202,7 @@ CREATE TABLE examples (
     decimal_three DECIMAL(30,10)
 );
 
--------------------------------------------------------
+/*
 
 Round will happen means, 
     -> if it exceed the limit and if last digit if [FLOAT, DOUBLT - equals or below 5 | DECIMAL - below 5], that last exceeded digit will be ignored (Ex : 9.999991, remains 9.99999).
@@ -239,6 +229,8 @@ Note : For float, Double while creating column, no need to set precision.
 
 Note : For Decimal, when the round should happen is based on our input (amount DECIMAL(30,10)). Here 10 is given, so round will happen if it exceeds 10. Max Limit for decimal is -- DECIMAL(65,30).
 
+*/
+
 CREATE TABLE examples (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     point_float FLOAT,
@@ -247,13 +239,11 @@ CREATE TABLE examples (
     decimal_three DECIMAL(65,30)
 );
 
--------------------------------------------------------
-
-GROUP BY but get extra columns which are not in group by
+-- GROUP BY but get extra columns which are not in group by
 
 SELECT currency, type, MAX(country_code) as country_code FROM `supported_countries` WHERE type IN('B2B', 'B2C') GROUP BY 1,2;
 
---
+# -----------------------------------------------------------------------------------------------------------------------------------
 
 SELECT 
     sc.currency, 
@@ -273,7 +263,7 @@ ON
     AND sc.type = subquery.type 
     AND sc.country_code = subquery.country_code;
 
---
+# -----------------------------------------------------------------------------------------------------------------------------------
 
 SELECT 
     currency, 
@@ -288,7 +278,7 @@ GROUP BY
     currency, type
 LIMIT 25;
 
---
+# -----------------------------------------------------------------------------------------------------------------------------------
 
 SELECT 
     currency, 
@@ -303,7 +293,7 @@ GROUP BY
     currency, type 
 LIMIT 0, 25;
 
---
+/*
 
 Order of country_code and country_name Retrieval
 
@@ -321,6 +311,8 @@ With ORDER BY
 
 To ensure a specific and consistent order, you should add ORDER BY clauses to the subqueries. For example, if you want the alphabetically first country_code and corresponding country_name:
 
+*/
+
 SELECT 
     currency, 
     type, 
@@ -334,6 +326,7 @@ GROUP BY
     currency, type 
 LIMIT 0, 25;
 
+# -----------------------------------------------------------------------------------------------------------------------------------
 
 SELECT 
     currency, 
@@ -348,4 +341,4 @@ GROUP BY
     currency, type 
 LIMIT 0, 25;
 
-correlated subquery, which operates by referencing columns from the outer query.
+-- correlated subquery, which operates by referencing columns from the outer query.
