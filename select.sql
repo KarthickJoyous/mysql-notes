@@ -42,6 +42,20 @@ SELECT name FROM table_name WHERE CAST(numeric_column AS VARCHAR) LIKE '123%'; -
 
 Select student_name, marks, CASE WHEN marks >= 35 THEN "PASS" ELSE "FAIL" END as 'result' from subject_marks where s_code = "SCIENCE";
 
+SELECT 
+    student_name, 
+    marks, 
+    CASE 
+        WHEN marks >= 90 THEN "GREAT"
+        WHEN marks >= 35 THEN "PASS" 
+        ELSE "FAIL" 
+    END as 'result' 
+FROM 
+    subject_marks 
+WHERE 
+    s_code = "SCIENCE";
+
+
 # ------------------------------------------------------------------------------------------------------------------
 
 -- Select with IF :
