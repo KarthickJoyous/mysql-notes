@@ -132,7 +132,17 @@ GROUP BY
     currency, type 
 LIMIT 0, 25;
 
+/*
+
+These qeries called as *correlated subquery*
+
+(SELECT country_code FROM supported_countries sc2 WHERE sc2.currency = sc1.currency AND sc2.type = sc1.type ORDER BY country_code DESC LIMIT 1) AS country_code,
+(SELECT country_name FROM supported_countries sc3 WHERE sc3.currency = sc1.currency AND sc3.type = sc1.type ORDER BY country_code DESC LIMIT 1) AS country_name
+
 -- correlated subquery, which operates by referencing columns from the outer query.
+-- They allow dynamically fetching specific related data for each row in the outer query without needing an explicit JOIN.
+-- However, they may be less performant than using JOIN for large datasets due to repeated execution for each row.
+*/
 
 
 # -----------------------------------------------------------------------------------------------------------------------------------
@@ -282,3 +292,101 @@ INSERT INTO employees (employee_name, department, job_title, hire_date, salary) 
 ('Quincy', 'Sales', 'Sales Representative', '2019-10-12', 47000),
 ('Rachel', 'HR', 'Assistant', '2022-11-15', 39000),
 ('Steve', 'Sales', 'Manager', '2020-12-23', 54000);
+
+-- 1055 error :
+
+/*
+
+Imagine you're asking MySQL to group data based on some columns and perform calculations, but then you also ask for other details that don't fit within those groups. 
+MySQL doesn't know how to handle those extra columns, so it throws error 1055.
+
+Error Query : SELECT customer_name, total_amount, SUM(total_amount) FROM orders GROUP BY customer_name;
+
+CORRECT Query : SELECT customer_name, SUM(total_amount) AS total_spent FROM orders GROUP BY customer_name;
+
+Alternative Solution (if you really need total_amount):
+
+If you want to keep the SQL query without fixing the logic, you can temporarily turn off the ONLY_FULL_GROUP_BY mode, but this is not recommended for long-term solutions:
+
+SET sql_mode = (SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));
+
+Note: Modifying SQL modes might lead to unexpected behavior in other queries. Always aim to fix the query logic first.
+
+*/
+
+# -- GROUP BY but get extra columns which are not in group by
+
+SELECT 
+    sc.currency, 
+    sc.type, 
+    sc.country_code, 
+    sc.country_name
+FROM 
+    supported_countries sc
+JOIN 
+    (SELECT currency, type, MAX(country_code) AS country_code
+     FROM supported_countries
+     WHERE type IN ('B2B', 'B2C')
+     GROUP BY currency, type
+     LIMIT 25) AS subquery
+ON 
+    sc.currency = subquery.currency 
+    AND sc.type = subquery.type 
+    AND sc.country_code = subquery.country_code;
+
+SELECT item.*, subquery.total_uses from item join (select item_id, COUNT(*) as total_uses from uses GROUP BY item_id) as subquery on item.item_id = subquery.item_id; 
+
+SELECT authors.*, subquery.total_written_books FROM `authors` join (SELECT author_id, COUNT(*) as total_written_books from books group by author_id) as subquery on subquery.author_id = authors.id order by total_written_books desc; 
+
+WITH CTE as (SELECT author_id, COUNT(*) as total_written_books from books group by author_id) 
+SELECT authors.*, subquery.total_written_books FROM `authors` join CTE as subquery on subquery.author_id = authors.id order by total_written_books desc; 
+
+CREATE TABLE item (
+    item_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_name VARCHAR(100),
+    description VARCHAR(255),
+    price DECIMAL(10, 2)
+);
+
+INSERT INTO item (item_name, description, price) VALUES
+('Item A', 'Description of Item A', 10.50),
+('Item B', 'Description of Item B', 20.00),
+('Item C', 'Description of Item C', 15.75);
+
+
+CREATE TABLE uses (
+    use_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT,
+    used_by VARCHAR(100),
+    use_date DATE,
+    FOREIGN KEY (item_id) REFERENCES item(item_id)
+);
+
+INSERT INTO uses (item_id, used_by, use_date) VALUES
+(1, 'User1', '2024-11-01'),
+(1, 'User2', '2024-11-02'),
+(2, 'User3', '2024-11-03'),
+(1, 'User4', '2024-11-04'),
+(3, 'User5', '2024-11-05'),
+(2, 'User6', '2024-11-06');
+
+/*
+
+FUNCTIONAL DEPENDENT (GROUP BY):
+
+SELECT w1.name AS Worker1, 
+       GROUP_CONCAT(w2.id) AS WorkersWithLowerSalary 
+FROM workers w1 
+LEFT JOIN workers w2 
+  ON w1.salary >= w2.salary AND w1.id != w2.id 
+GROUP BY w1.id 
+ORDER BY w1.id;
+
+
+This groups the results by w1.id (the worker in question).
+Since w1.id is the grouping column, it's okay to use w1.name in the SELECT clause without explicitly adding it to GROUP BY. This is allowed because w1.name is functionally dependent on w1.id — meaning for every unique w1.id, there's only one corresponding w1.name.
+This is a standard behavior in SQL. As long as the non-aggregated columns are dependent on the GROUP BY column (here w1.id), they can be included in the SELECT without being part of the GROUP BY clause.
+
+SELECT item.item_name FROM `item` GROUP by item.item_id; (Just for knowledge that this works)
+
+*/
