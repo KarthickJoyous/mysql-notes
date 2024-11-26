@@ -492,3 +492,17 @@ INSERT INTO managers (department_id, name) VALUES
 (2, 'Bob'),
 (3, 'Carry'),
 (4, 'DOM');
+
+SELECT e.*, d.name as dep_name FROM `employees` as e join departments as d on e.department_id = d.id; 
+
+SELECT e.*, d.name as dep_name, p.name as pro_name FROM `employees` as e join departments as d on e.department_id = d.id join projects as p on e.project_id = p.id;
+
+SELECT e.*, d.name as dep_name, p.name as pro_name, m.name as man_name FROM `employees` as e join departments as d on e.department_id = d.id join projects as p on e.project_id = p.id join managers as m on d.id = m.department_id;
+
+--
+
+SELECT e.*, d.name as dep_name FROM `employees` as e left join departments as d on e.department_id = d.id;
+
+SELECT e.*, d.name as dep_name, p.name as pro_name FROM `employees` as e left join departments as d on e.department_id = d.id left join projects as p on e.project_id = p.id;
+
+SELECT e.*, d.name as dep_name, p.name as pro_name, m.name as man_name FROM `employees` as e left join departments as d on e.department_id = d.id left join projects as p on e.project_id = p.id left join managers as m on d.id = m.department_id;

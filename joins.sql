@@ -1,3 +1,7 @@
+# When join happens, the result set of join will contains all columns from both tables. It will return selected columns only at the end after all execution is done.
+
+# The JOIN operation combines all columns from the involved tables in an intermediate result set. However, the final output only includes the columns explicitly selected in the SELECT statement, even if more columns were part of the join.
+
 # 1. INNER JOIN
 
 /*
