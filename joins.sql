@@ -76,6 +76,7 @@ ON table1.column = table2.column;
 /*
 
 Produces a Cartesian product of two tables (every row in table1 is joined with every row in table2).
+Can't use ON in cross join, as it will join each combination of rows fromboth tables. No filter on tables.
 
 Syntax:
 
