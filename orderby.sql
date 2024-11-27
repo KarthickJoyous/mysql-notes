@@ -126,3 +126,6 @@ LIMIT 0, 100;
 
 SELECT * FROM `books` ORDER BY CASE WHEN FIELD(author_id, 1,3,2) > 0 THEN FIELD(author_id, 1,3,2) ELSE 4 END, author_id; 
 
+-- ORDER By RAND()
+
+SELECT * from users ORDER BY RAND() DESC LIMIT 10; -- It assigns a rand value to each row then sort it by that value.
