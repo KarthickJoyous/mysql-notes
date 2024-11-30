@@ -62,3 +62,9 @@ SELECT UTC_TIMESTAMP() as 'UTC', CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+05:30')
 }
 
 */
+
+SELECT created_at as "UTC", CONVERT_TZ(created_at, "+00:00", "+05:30") as "IST" from course_student;
+
+-- The below query will work if mysql.time_zone_name is configured.
+
+SELECT created_at as "UTC", CONVERT_TZ(created_at, "UTC", "Asia/Kolkata") as "IST" from course_student;
