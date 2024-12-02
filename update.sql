@@ -1,6 +1,15 @@
 UPDATE users
-SET `name` = 'John'
-WHERE `id` = 1049;
+SET 
+    `name` = 'John'
+WHERE `id` = 1048;
+
+UPDATE users
+SET 
+    `name` = 'John',
+    `email` = 'john@app.com',
+    `email_verified_at` = NOW()
+WHERE `id` = 1048;
+
 /*
  UPDATE ALL ROWS :
  
