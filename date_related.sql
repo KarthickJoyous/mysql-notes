@@ -112,3 +112,5 @@ from employees as e1
 join employees as e2
 where e1.employee_id != e2.employee_id
 ORDER BY e1.hire_date desc;
+
+-- If ON clause is not specified in INNER JOIN, then it will return the Cartesian product (Cross JOIN) of the tables involved in the JOIN.
