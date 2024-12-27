@@ -69,3 +69,35 @@ ON e.manager_id = m.employee_id AND e.hire_date < m.hire_date;
 */
 
 SELECT manager_id, COUNT(*) AS Employees FROM employees GROUP BY manager_id HAVING Employees >= 2;
+
+/*
+    Get employee & their managers :
+*/
+
+# employees & manager in same table (manager assigned for employee using manager_id)
+
+SELECT e.first_name AS "EMPLOYEE", m.first_name AS "MANAGER" FROM employees AS e
+LEFT JOIN employees AS m
+ON e.manager_id = m.employee_id;
+
+# employees & manager in different table
+
+SELECT u.name AS "USER", m.name AS "MANAGER" FROM users AS u
+LEFT JOIN managers AS m
+ON u.manager_id = m.id;
+
+/*
+    Find employees who is earning more than their manager
+*/
+
+# employees & manager in same table (manager assigned for employee using manager_id)
+
+SELECT e.employee_id, e.salary, (e.salary - m.salary) AS "Earning_MORE" FROM employees AS e
+JOIN employees AS m
+ON u.manager_id = m.employee_id AND e.salary > m.salary;
+
+# employees & manager in different table
+
+SELECT u.id, u.salary, (u.salary - m.salary) AS "Earning_MORE" FROM users AS u
+JOIN managers AS m
+ON u.manager_id = m.id AND u.salary > m.salary;

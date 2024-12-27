@@ -301,3 +301,102 @@ INSERT INTO job_grades (grade_level, lowest_sal, highest_sal) VALUES
 ('D', '10000', '14999'),
 ('E', '15000', '24999'),
 ('F', '25000', '40000');
+
+CREATE TABLE users (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30),
+    salary float,
+    manager_id INT
+);
+
+CREATE TABLE managers (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30),
+    salary float
+);
+
+INSERT INTO users (name, salary, manager_id) VALUES 
+-- Users with salaries less than their managers
+('User1', 50000, 1),
+('User2', 55000, 2),
+('User3', 48000, 3),
+('User4', 52000, 4),
+('User5', 53000, 5),
+('User6', 50000, 6),
+('User7', 54000, 7),
+('User8', 51000, 8),
+('User9', 49000, 9),
+('User10', 56000, 10),
+
+-- Users with salaries more than their managers
+('User11', 80000, 1),
+('User12', 76000, 2),
+('User13', 78000, 3),
+('User14', 77000, 4),
+('User15', 75000, 5),
+
+-- Users with NULL manager_id
+('User16', 60000, NULL),
+('User17', 58000, NULL),
+
+-- Additional users with salaries less than their managers
+('User18', 52000, 6),
+('User19', 53000, 7),
+('User20', 50000, 8);
+
+INSERT INTO users (name, salary, manager_id) VALUES 
+('User21', 52000, 1),
+('User22', 51000, 3),
+('User23', 55000, 2),
+('User24', 53000, 4),
+('User25', 54000, 5),
+('User26', 57000, 1),
+('User27', 50000, 6),
+('User28', 49000, 7),
+('User29', 56000, 8),
+('User30', 58000, 9),
+('User31', 60000, 10),
+('User32', 62000, 2),
+('User33', 61000, 3),
+('User34', 54000, 5),
+('User35', 50000, 4),
+('User36', 52000, 8),
+('User37', 51000, 9),
+('User38', 53000, 7),
+('User39', 55000, 6),
+('User40', 58000, 10);
+
+INSERT INTO users (name, salary, manager_id) VALUES 
+('User41', 52000, 1),
+('User42', 54000, 2),
+('User43', 53000, 3),
+('User44', 57000, 4),
+('User45', 59000, 5),
+('User46', 55000, 6),
+('User47', 51000, 7),
+('User48', 58000, 8),
+('User49', 56000, 9),
+('User50', 60000, 10),
+('User51', 52000, 2),
+('User52', 53000, 1),
+('User53', 54000, 4),
+('User54', 51000, 3),
+('User55', 59000, 6),
+('User56', 57000, 8),
+('User57', 50000, 7),
+('User58', 55000, 10),
+('User59', 52000, 9),
+('User60', 58000, 5);
+
+
+INSERT INTO managers (name, salary) VALUES 
+('Manager1', 70000),
+('Manager2', 65000),
+('Manager3', 72000),
+('Manager4', 68000),
+('Manager5', 75000),
+('Manager6', 71000),
+('Manager7', 69000),
+('Manager8', 74000),
+('Manager9', 66000),
+('Manager10', 73000);
