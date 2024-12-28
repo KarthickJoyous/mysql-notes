@@ -199,9 +199,11 @@ CREATE INDEX idx_nonclustered ON Employees(EmployeeName);
     *   Simplifies and organizes queries.
     *   Example:
         
-        ```sql 
-        WITH Sales_CTE AS (     SELECT ProductID, SUM(Sales) AS TotalSales     FROM Sales     GROUP BY ProductID ) SELECT * FROM Sales_CTE WHERE TotalSales > 1000;
-        ```
+    ```sql 
+    WITH Sales_CTE AS (
+        SELECT ProductID, SUM(Sales) AS TotalSales FROM Sales GROUP BY ProductID
+    ) SELECT * FROM Sales_CTE WHERE TotalSales > 1000;
+    ```
         
 
 * * *
