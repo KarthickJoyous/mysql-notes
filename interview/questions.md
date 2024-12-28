@@ -63,15 +63,15 @@ SQL Basics
 *   Returns the first non-null value in a list of arguments.
 *   Example:
     
-    sql
+    ```sql
     
-    Copy code
+    SELECT COALESCE(NULL, 'Default') AS Result; -- Output: 'Default'
+
+    SELECT COALESCE(NULL, 'Default', 'Value') AS Result; -- Output: 'Default'
+
+    SELECT COALESCE("Hello", 'Default') AS Result; -- Output: 'Hello'
     
-    `SELECT COALESCE(NULL, 'Default') AS Result; -- Output: 'Default'`
-
-    `SELECT COALESCE(NULL, 'Default', 'Value') AS Result; -- Output: 'Default'`
-
-    `SELECT COALESCE("Hello", 'Default') AS Result; -- Output: 'Hello'`
+    ```
     
 
 * * *
@@ -199,11 +199,9 @@ CREATE INDEX idx_nonclustered ON Employees(EmployeeName);
     *   Simplifies and organizes queries.
     *   Example:
         
-        sql
-        
-        Copy code
-        
-        `WITH Sales_CTE AS (     SELECT ProductID, SUM(Sales) AS TotalSales     FROM Sales     GROUP BY ProductID ) SELECT * FROM Sales_CTE WHERE TotalSales > 1000;`
+        ```sql 
+        WITH Sales_CTE AS (     SELECT ProductID, SUM(Sales) AS TotalSales     FROM Sales     GROUP BY ProductID ) SELECT * FROM Sales_CTE WHERE TotalSales > 1000;
+        ```
         
 
 * * *
